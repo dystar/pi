@@ -5,7 +5,7 @@ import { apiUrl } from '../apiUrl';
 function Article(props) {
     const article = props.article;
     const article_style = {
-        backgroundImage: 'url(' + article.image + ')'
+        backgroundImage: 'url(/' + article.image + ')'
     };
     const article_full_link = '/articles/' + article.id;
     return (
@@ -22,7 +22,7 @@ function Article(props) {
 function FullArticle(props) {
     const article = props.article;
     const article_style = {
-        backgroundImage: 'url(' + article.image + ')'
+        backgroundImage: 'url(/' + article.image + ')'
     };
     return (
         <div className='col-12 col-md-4'>

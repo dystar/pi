@@ -2,7 +2,9 @@ import React, {Component} from 'react';
 import {UncontrolledCollapse, Button} from 'reactstrap';
 import { apiUrl } from '../apiUrl';
 
-function handleSubmit(event) {
+var ObjectId = require("bson-objectid");
+
+function handleSubmit(event, handleChange) {
     event.preventDefault();
     const type = event.target.getAttribute("type");
     const data = new FormData(event.target);
@@ -10,40 +12,48 @@ function handleSubmit(event) {
     fetch(apiUrl + type, {
         method: 'POST',
         body: data,
-  });
+    })
+    .then(
+        () => handleChange()
+    );
+}
+
+function noop(input){
+    return true;
 }
 
 function EditForm(props) {
     if(props.type=="pages") {
-        return( <form className="form" type="pages" onSubmit={handleSubmit} encType="multipart/form-data">
-                <input type="hidden" name="_id" defaultValue={props.obj._id}/>
-                <label>Алиас</label><input type="text" name="name" defaultValue={props.obj.name} className="form-control"/>
-                <label>Заголовок</label><input type="text" name="title" defaultValue={props.obj.title} className="form-control"/>
-                <label>Текст</label><textarea name="text" defaultValue={props.obj.text} className="form-control"/>
+        const obj = props.obj ? props.obj : {_id: ObjectId(), id: "", name: "", title: "", text: ""}
+        return( <form className="form" type="pages" onSubmit={(event) => {handleSubmit(event, props.handleChange)}} encType="multipart/form-data" key={obj._id}>
+                <input type="hidden" name="_id" defaultValue={ObjectId(obj._id)} onChange={noop}/>
+                <label>Алиас</label><input type="text" name="name" defaultValue={obj.name} onChange={noop} className="form-control"/>
+                <label>Заголовок</label><input type="text" name="title" defaultValue={obj.title} onChange={noop} className="form-control"/>
+                <label>Текст</label><textarea name="text" defaultValue={obj.text} onChange={noop} className="form-control"/>
                 <button type="submit">Сохранить</button>
             </form>
         )
     }
     if(props.type=="articles") {
-        return( <form className="form" type="articles" onSubmit={handleSubmit} encType="multipart/form-data">
-                <input type="hidden" name="_id" defaultValue={props.obj._id}/>
-                <input type="hidden" name="id" defaultValue={props.obj.id}/>
-                <label>Заголовок</label><input type="text" name="title" defaultValue={props.obj.title} className="form-control"/>
-                <label>Картинка</label><input type="file" name="image" className="form-control"/>
-                <label>Текст</label><textarea name="text" defaultValue={props.obj.text} className="form-control"/>
+        const obj = props.obj ? props.obj : {_id: ObjectId(), id: "", title: "", text: ""}
+        return( <form className="form" type="articles" onSubmit={(event) => {handleSubmit(event, props.handleChange)}} encType="multipart/form-data">
+                <input type="hidden" name="_id" defaultValue={ObjectId(obj._id)} onChange={noop}/>
+                <label>Заголовок</label><input type="text" name="title" defaultValue={obj.title} onChange={noop} className="form-control"/>
+                <label>Картинка</label><input type="file" name="image" onChange={noop} className="form-control"/>
+                <label>Текст</label><textarea name="text" defaultValue={obj.text} onChange={noop} className="form-control"/>
                 <button type="submit">Сохранить</button>
             </form>
         )
     }
     if(props.type=="heroes") {
+        const obj = props.obj ? props.obj : {_id: ObjectId(), id: "", name: "", city: "", year: "", text: ""}
         return( <form className="form" type="heroes" onSubmit={handleSubmit} encType="multipart/form-data">
-                <input type="hidden" name="_id" defaultValue={props.obj._id}/>
-                <input type="hidden" name="id" defaultValue={props.obj.id}/>
-                <label>Имя</label><input type="text" name="name" defaultValue={props.obj.name} className="form-control"/>
-                <label>Город</label><input type="text" name="city" defaultValue={props.obj.city} className="form-control"/>
-                <label>Год</label><input type="text" name="year" defaultValue={props.obj.year} className="form-control"/>
-                <label>Картинка</label><input type="file" name="image" className="form-control"/>
-                <label>Текст</label><textarea name="text" defaultValue={props.obj.text} className="form-control"/>
+                <input type="hidden" name="_id" defaultValue={ObjectId(obj._id)} onChange={noop}/>
+                <label>Имя</label><input type="text" name="name" defaultValue={obj.name} onChange={noop} className="form-control"/>
+                <label>Город</label><input type="text" name="city" defaultValue={obj.city} onChange={noop} className="form-control"/>
+                <label>Год</label><input type="text" name="year" defaultValue={obj.year} onChange={noop} className="form-control"/>
+                <label>Картинка</label><input type="file" name="image" onChange={noop} className="form-control"/>
+                <label>Текст</label><textarea name="text" defaultValue={obj.text} onChange={noop} className="form-control"/>
                 <button type="submit">Сохранить</button>
             </form>
         )
@@ -53,7 +63,7 @@ function EditForm(props) {
 
 class Admin extends Component{
     constructor(props){
-        super(props);
+        super(props);   
         this.state = {
             collection: "pages",
             id: 1,
@@ -66,8 +76,13 @@ class Admin extends Component{
             }
         }
         this.setEditing = this.setEditing.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.fetchData = this.fetchData.bind(this);
     }
     componentDidMount() {
+        this.fetchData();
+    }
+    fetchData() {
         ["pages", "articles", "heroes"].map(col => {
             fetch(apiUrl + col)
             .then(res => {
@@ -78,11 +93,16 @@ class Admin extends Component{
             .then(data => {
                 console.log(data);
                 this.setState({[col]: data})
-            });
+            }).catch(() => {
+                console.log("server unavailable");
+            })
         });
     }
     setEditing(obj, type) {
         this.setState({edit: {obj: obj, type: type}});
+    }
+    handleChange() {
+        this.fetchData();
     }
     render() {
         const page_names = this.state.pages.map(page => <li key={page._id} onClick={() => this.setEditing(page, "pages")}>{page.title}</li>)
@@ -93,15 +113,15 @@ class Admin extends Component{
             <div className="container">
                 <div className="row">
                     <div className="col-12 col-md-3">
-                        <h3>Страницы [<span onClick={() => this.setState({edit: {obj: {}, type: "pages"}})}>новая</span>]</h3>
+                        <h3>Страницы [<span onClick={() => this.setState({edit: {type: "pages"}})}>новая</span>]</h3>
                         {page_names}
-                        <h3>Статьи [<span onClick={() => this.setState({edit: {obj: {}, type: "articles"}})}>новая</span>]</h3>
+                        <h3>Статьи [<span onClick={() => this.setState({edit: {type: "articles"}})}>новая</span>]</h3>
                         {articles_names}
-                        <h3>Герои [<span onClick={() => this.setState({edit: {obj: {}, type: "heroes"}})}>новая</span>]</h3>
+                        <h3>Герои [<span onClick={() => this.setState({edit: {type: "heroes"}})}>новая</span>]</h3>
                         {heroes_names}
                     </div>
                     <div className="col-12 col-md-9">
-                        <EditForm obj={this.state.edit.obj} type={this.state.edit.type}/>
+                        <EditForm obj={this.state.edit.obj} type={this.state.edit.type} handleChange = {this.handleChange}/>
                     </div>
                 </div>
             </div>

@@ -20,7 +20,7 @@ class Home extends Component {
                                 <MissionBlock/>
                             </div>
                             <div className="col-12 col-md-6">
-                                <VideosBlock video_url="https://www.youtube.com/embed/videoseries?list=PL2vneqnOAuNhLzRPkAnGVjrke_MyQFsPD" header="Видео ролики"/>
+                                <VideosBlock video_url="https://youtube.com/embed/G3kCnvd6nY4" header="Видео ролики"/>
                             </div>
                         </div>
                     </div>

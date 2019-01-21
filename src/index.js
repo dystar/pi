@@ -11,8 +11,8 @@ import Admin from "./js/components/Admin";
 import SimplePage from "./js/components/SimplePage";
 import {apiUrl} from "./js/apiUrl";
 
-import "bootstrap/dist/css/bootstrap.min.css";
-import "@fortawesome/fontawesome-free/css/all.min.css"
+//import "bootstrap/dist/css/bootstrap.min.css";
+//import "@fortawesome/fontawesome-free/css/all.min.css"
 import "./css/styles.scss";
 
 class Main extends Component {
@@ -32,7 +32,10 @@ class Main extends Component {
         .then(res => res.json())
         .then(data => {
             this.setState({pages: data, about: "about_test"})
-        });
+        })
+        .catch(
+            () => console.log("server unavailable")
+        )
     }
     render() {
         const about=this.state.pages.filter(page => page.name == "about")[0];
