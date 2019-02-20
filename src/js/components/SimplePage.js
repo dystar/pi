@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 function SimplePage(props) {
     const text = props.page ? props.page.text : "";

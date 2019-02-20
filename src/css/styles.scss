@@ -165,6 +165,14 @@ h4 {
         max-height: 640px;
     }
 }
+.pointer {
+    cursor: pointer;
+}
+.preview_image {
+    width: 200px;
+    display: block;
+    margin: 5px 0;
+}
 @media (max-width: 768px) {
     .text_logo {
         order: 1;

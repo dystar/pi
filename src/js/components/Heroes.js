@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Link} from 'react-router-dom';
+import {Link} from "react-router-dom";
 import {apiUrl} from "../apiUrl";
 
 function cut_text(text) {
@@ -11,13 +11,13 @@ function cut_text(text) {
 function Hero(props) {
     const hero = props.hero;
     const text = cut_text(hero.text);
-    const full_hero_link = '/heroes/' + hero.year + '/' + hero.city + '/' + hero.id;
+    const full_hero_link = "/heroes/" + hero.year + "/" + hero.city + "/" + hero._id;
     return (
         <div className="col-12 col-md-4">
             <Link to={full_hero_link}>
                 <div className="hero">
                     <img className="hero_image" src={hero.image}/>
-                    <p>{text}</p>
+                    <p dangerouslySetInnerHTML={{__html: text}}></p>
                 </div>
             </Link>
         </div>
@@ -25,13 +25,20 @@ function Hero(props) {
 }
 
 function FullHero(props) {
-    const hero = props.hero;
-    return (
-        <div className="hero">
-            <img className="hero_image" src={hero.image}/>
-            <p>{hero.text}</p>
-        </div>
-    )
+    if(props.hero) {
+        const hero = props.hero;
+        return (
+            <div className="hero">
+                <img className="hero_image" src={hero.image}/>
+                <p dangerouslySetInnerHTML={{__html: hero.text}}></p>
+            </div>
+        )
+    }
+    else {
+        return (
+            <div className="hero"></div>
+        )
+    }
 }
 
 class Heroes extends Component {
@@ -56,7 +63,7 @@ class Heroes extends Component {
             var heroes = this.state.heroes;
 
             if(this.props.match.params.heroId) {
-                heroes = heroes.filter(hero => hero.id == this.props.match.params.heroId);
+                heroes = heroes.filter(hero => hero._id == this.props.match.params.heroId);
                 return(
                     <div className="container">
                         <FullHero hero={heroes[0]}/>
@@ -70,7 +77,7 @@ class Heroes extends Component {
             if(this.props.match.params.city)
                 heroes = heroes.filter(hero => hero.city == this.props.match.params.city);
             
-            heroes = heroes.map((hero) => <Hero key={hero.id} hero={hero}/>);
+            heroes = heroes.map((hero) => <Hero key={hero._id} hero={hero}/>);
         return(
             <div className="container">
                 <div className="row">

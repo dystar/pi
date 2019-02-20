@@ -5,9 +5,9 @@ import { apiUrl } from '../apiUrl';
 function Article(props) {
     const article = props.article;
     const article_style = {
-        backgroundImage: 'url(/' + article.image + ')'
+        backgroundImage: 'url(' + article.image + ')'
     };
-    const article_full_link = '/articles/' + article.id;
+    const article_full_link = '/articles/' + article._id;
     return (
         <div className='col-12 col-md-4'>
             <Link to={article_full_link}>
@@ -26,7 +26,7 @@ function FullArticle(props) {
     };
     return (
         <div className='col-12 col-md-4'>
-            <div className='article' style={article_style}>
+            <div className='full_article' style={article_style}>
                 <h4 className='article_title'>{article.title}</h4>
                 <p className='article_text'>{article.text}</p>
             </div>
@@ -54,7 +54,7 @@ class Articles extends Component {
     }
     render() {
         if(this.state.articles.length>0 && this.props.match && this.props.match.params.articleId) {
-            var article = this.state.articles.filter(article => article.id == this.props.match.params.articleId)[0];
+            var article = this.state.articles.filter(article => article._id == this.props.match.params.articleId)[0];
             return(
                 <div className="container">
                     <FullArticle article={article}/>
@@ -62,7 +62,7 @@ class Articles extends Component {
             )
         }
 
-        var articles = this.state.articles.map((article) => <Article key={article.id} article={article}/>);
+        var articles = this.state.articles.map((article) => <Article key={article._id} article={article}/>);
         return(
             <div className="container">
                 <h3 className='header'>Полезная информация</h3>

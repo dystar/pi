@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { Nav, Navbar, NavbarBrand, NavbarToggler, Collapse, NavItem, Jumbotron, UncontrolledDropdown, DropdownToggle, DropdownItem, DropdownMenu } from 'reactstrap';
-import { NavLink } from 'react-router-dom';
-import { BrowserRouter } from 'react-router-dom';
+import React, { Component } from "react";
+import { Nav, Navbar, NavbarBrand, NavbarToggler, Collapse, NavItem, Jumbotron, UncontrolledDropdown, DropdownToggle, DropdownItem, DropdownMenu } from "reactstrap";
+import { NavLink } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 
 class Header extends Component {
     constructor(props) {
@@ -27,10 +27,10 @@ class Header extends Component {
                 <Collapse isOpen={this.state.isNavOpen} navbar>
                     <Nav navbar>
                     <NavItem>
-                        <NavLink className="nav-link"  to='/'>Главная</NavLink>
+                        <NavLink className="nav-link"  to="/">Главная</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink className="nav-link" to='/about'>О проекте</NavLink>
+                        <NavLink className="nav-link" to="/about">О проекте</NavLink>
                     </NavItem>
                     <UncontrolledDropdown nav inNavbar>
                         <DropdownToggle nav caret>
@@ -59,10 +59,10 @@ class Header extends Component {
                         </DropdownMenu>
                     </UncontrolledDropdown>
                     <NavItem>
-                        <NavLink className="nav-link" to='/help'>Как нам помочь</NavLink>
+                        <NavLink className="nav-link" to="/help">Как нам помочь</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink className="nav-link" to='/thanks'>Благодарности</NavLink>
+                        <NavLink className="nav-link" to="/thanks">Благодарности</NavLink>
                     </NavItem>
                     </Nav>
                 </Collapse>

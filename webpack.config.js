@@ -1,7 +1,9 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 path = require('path'),
 srcPath = path.resolve(__dirname, "./src/"),
-distPath = path.resolve(__dirname, './src/build/');
+distPath = path.resolve(__dirname, "./dist/");
 module.exports = {
   output: {
     publicPath: "/"
@@ -34,14 +36,26 @@ module.exports = {
     {
       test: /\.css$/,
       use: [
-        'style-loader', 'css-loader'
+        'style-loader',
+        'css-loader'
       ]
     },
     {
-      test: /\.(ttf|woff|woff2|eot|svg|png|jpg)$/,
+      test: /\.(png|jpg)$/,
       use: [
-        'url-loader'
+        'file-loader'
       ]
+    },
+    {
+      test: /\.(ttf|woff|woff2|eot|svg)$/,
+      use: [{
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]',
+          outputPath: 'fonts/',    // where the fonts will go
+          //publicPath: ''       // override the default path
+        }
+      }]
     }
 	]
   },
@@ -52,6 +66,12 @@ module.exports = {
     new HtmlWebPackPlugin({
       template: "./src/index.html",
       filename: "./index.html"
-    })
+    }),
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static'
+    }),
+    new CopyWebpackPlugin([
+     {from:'src/img',to:'img'} 
+    ]), 
   ]
 };

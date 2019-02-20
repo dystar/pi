@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Switch, Route, Redirect, withRouter, BrowserRouter } from 'react-router-dom';
+import { Switch, Route, Redirect, withRouter, BrowserRouter } from "react-router-dom";
 import ReactDOM from "react-dom";
 import Header from "./js/components/Header";
 import Footer from "./js/components/Footer";
@@ -11,8 +11,8 @@ import Admin from "./js/components/Admin";
 import SimplePage from "./js/components/SimplePage";
 import {apiUrl} from "./js/apiUrl";
 
-//import "bootstrap/dist/css/bootstrap.min.css";
-//import "@fortawesome/fontawesome-free/css/all.min.css"
+import "bootstrap/dist/css/bootstrap.min.css";
+import "@fortawesome/fontawesome-free/css/all.min.css"
 import "./css/styles.scss";
 
 class Main extends Component {

@@ -15,7 +15,15 @@ function StoryBlock(props) {
 function About(props) {
     const about_text = props.about ? props.about.text : "";
     const story = props.story ? props.story.text : "";
-    var pubs = [
+    const videos = [
+        {
+            src: "https://youtube.com/embed/G3kCnvd6nY4",
+        },
+        {
+            src: "https://youtube.com/embed/G3kCnvd6nY4",
+        },
+    ];
+    const pubs = [
         {
             id: 1,
             title: "«Невидимые»: История мамы-фотографа, которая снимает особенных детей",
@@ -45,13 +53,12 @@ function About(props) {
             </div>
         )
     })
-    console.log(pubs);
     return(
         <div className="about">
         <div className="container map_block">
             <div className="row">
                 <div className="col-12 col-md-8">
-                    <img src="/src/img/mother-russia.jpg" className="russian_map"/>
+                    <img src="./img/mother-russia.jpg" className="russian_map"/>
                 </div>
                 <div className="col-12 col-md-4">
                     <div className="about_text" dangerouslySetInnerHTML={{__html: about_text}}></div>
@@ -65,7 +72,7 @@ function About(props) {
                     <StoryBlock story={story} author_img="https://cdn.pixabay.com/photo/2015/04/24/20/59/girl-738306__340.jpg"/>
                 </div>
                 <div className="col-12 col-md-6">
-                    <VideosBlock video_url="https://www.youtube.com/embed/3_Mc_icIrAs"/>
+                    <VideosBlock videos={videos}/>
                 </div>
             </div>
             <h3 className="header">Публикации</h3>
